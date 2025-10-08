@@ -3,8 +3,11 @@ package br.pucpr.projetowebservice.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat; // <- Importante para formatar a data
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +23,10 @@ public class UsuarioDTO {
     @NotBlank
     private String email;
 
+    @NotNull(message = "A senha precisa ser preenchida.")
+    private String senha;
+
+    @NotNull(message = "A data de nascimento precisa ser preenchida.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date dataNascimento;
 }
