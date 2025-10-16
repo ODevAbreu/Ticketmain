@@ -39,11 +39,12 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/evento**").denyAll()
+                        .requestMatchers("/api/v1/evento**").permitAll()
                         //.requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").denyAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/v1/usuario**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/usuario**").permitAll()
+                        .requestMatchers("/api/login**").permitAll()
                         .anyRequest().authenticated()
                 )
 
