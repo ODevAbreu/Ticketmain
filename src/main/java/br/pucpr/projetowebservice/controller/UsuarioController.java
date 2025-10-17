@@ -1,14 +1,18 @@
 package br.pucpr.projetowebservice.controller;
 
 import br.pucpr.projetowebservice.dto.UsuarioDTO;
+import br.pucpr.projetowebservice.model.Usuario;
+import br.pucpr.projetowebservice.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/usuario")
 @Tag(name = "Usuário", description = "APIs de gerenciamento de usuários")
+@AllArgsConstructor
 public class UsuarioController {
 
+    private final UsuarioService usuarioService;
+
     private List<UsuarioDTO> usuarios = new ArrayList<>();
-    private int nextId = 1;
 
     @PostMapping
     @Operation(summary = "Salva um usuário", description = "Salva um usuário")
@@ -28,8 +34,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "400", description = "Os dados do usuário estão incorretos."),
     })
     public ResponseEntity<UsuarioDTO> save(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        usuarioDTO.setId(nextId++);
-        usuarios.add(usuarioDTO);
+        Usuario usuario = new ModelMapper().map(usuarioDTO, Usuario.class);
+        usuarioService.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
 
