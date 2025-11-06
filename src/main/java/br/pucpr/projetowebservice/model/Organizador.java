@@ -12,13 +12,17 @@ public class Organizador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CNPJ")
-    private Long cnpj;
+    @Column(name = "ID")
+    private Integer id;
 
-    @Column(name = "NOME FANTASIA")
+    @Column(name = "NOME_FANTASIA")
     private String nome;
 
     @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "SENHA")
+    private String senha;
+
 
 }

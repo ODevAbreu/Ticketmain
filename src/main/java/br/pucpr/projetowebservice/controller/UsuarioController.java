@@ -50,13 +50,8 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> update(@PathVariable("id") Integer id, @RequestBody UsuarioDTO usuarioDTO) {
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId().equals(id)) {
-                usuarioDTO.setId(id);
-                usuarios.set(i, usuarioDTO);
-                return ResponseEntity.ok(usuarioDTO);
-            }
-        }
+        Usuario usuario = new ModelMapper().map(usuarioDTO, Usuario.class);
+        usuarioService.save(usuario);
         return ResponseEntity.notFound().build();
     }
 
