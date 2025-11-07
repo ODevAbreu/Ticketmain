@@ -14,7 +14,6 @@ public class UserAuthentication implements UserDetails {
     private String lastname;
     private String email;
     private String password;
-
     private Role role;
 
     @Override

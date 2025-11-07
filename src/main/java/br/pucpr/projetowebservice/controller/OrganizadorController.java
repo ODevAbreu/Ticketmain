@@ -28,8 +28,6 @@ public class OrganizadorController {
 
     private final OrganizadorService organizadorService;
 
-    private List<OrganizadorDTO> organizadores = new ArrayList<>();
-
     @PostMapping
     @Operation(summary = "Salva um organizador", description = "Salva um organizador")
     @ApiResponses(value = {
@@ -39,6 +37,7 @@ public class OrganizadorController {
     public ResponseEntity<OrganizadorDTO> save(@Valid @RequestBody OrganizadorDTO organizadorDTO) {
         Organizador organizador = new ModelMapper().map(organizadorDTO, Organizador.class);
         organizadorService.save(organizador);
+        organizadorDTO.setId(organizador.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(organizadorDTO);
     }
 
@@ -47,8 +46,11 @@ public class OrganizadorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperado com sucesso"),
     })
-    public List<OrganizadorDTO> findAll() {
-        return organizadores;
+    public ResponseEntity<List<OrganizadorDTO>> findAll() {
+        List<Organizador> organizadores = organizadorService.findAll();
+        List<OrganizadorDTO> organizadorDTOS = organizadores.stream().map(user -> new ModelMapper().map(user, OrganizadorDTO.class)).
+                toList();
+        return new ResponseEntity<>(organizadorDTOS, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -60,7 +62,9 @@ public class OrganizadorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
-        boolean removed = organizadores.removeIf(u -> u.getId().equals(id));
-        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        //boolean removed = organizadores.removeIf(u -> u.getId().equals(id));
+        //return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        organizadorService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

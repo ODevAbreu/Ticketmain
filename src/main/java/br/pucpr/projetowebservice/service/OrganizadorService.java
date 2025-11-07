@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class OrganizadorService {
@@ -18,4 +20,11 @@ public class OrganizadorService {
         return organizadorRepository.save(user);
     }
 
+    public List<Organizador> findAll() {
+        return  organizadorRepository.findAll();
+    }
+
+    public void delete(Integer id) {
+        organizadorRepository.deleteById(id);
+    }
 }
