@@ -18,10 +18,11 @@ public class LoginController {
 
     private final AuthService authService;
 
-    @PostMapping
+    @PostMapping("/usuario")
     public ResponseEntity<AuthResponse> authenticate(
             @RequestBody AuthRequest request
     ) {
+        request.setTipologin("usuario");
         return ResponseEntity.ok(authService.authenticate(request));
     }
 

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrganizadorRepository extends JpaRepository<Organizador, Integer> {
+    Organizador findByEmail(String email);
+
 }
