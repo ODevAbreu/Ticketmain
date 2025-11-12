@@ -39,19 +39,19 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/evento**").permitAll()
+                        .requestMatchers("/api/v1/evento/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/usuario**").permitAll()
-                        .requestMatchers("/api/login**").permitAll()
-                        .requestMatchers("/api/v1/tipo**").permitAll()
-                        .requestMatchers("/api/v1/organizador**").permitAll()
+                        .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/api/v1/tipo/**").permitAll()
+                        .requestMatchers("/api/v1/organizador/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults()) -- POP UP DE LOGIN DESABILITADO.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
