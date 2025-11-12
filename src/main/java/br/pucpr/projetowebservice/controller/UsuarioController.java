@@ -44,9 +44,17 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperado com sucesso"),
     })
+
     public List<UsuarioDTO> findAll() {
-        return usuarios;
+        List<Usuario> usuarios = usuarioService.findAll();
+        List<UsuarioDTO> usuariosDTO = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for (Usuario u : usuarios) {
+            usuariosDTO.add(mapper.map(u, UsuarioDTO.class));
+        }
+        return usuariosDTO;
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> update(@PathVariable("id") Integer id, @RequestBody UsuarioDTO usuarioDTO) {
