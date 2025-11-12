@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TipoDTO {
+
     private Integer IdTipo;
     private String Tipo;
 

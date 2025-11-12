@@ -2,6 +2,7 @@ package br.pucpr.projetowebservice.controller;
 
 import br.pucpr.projetowebservice.dto.TipoDTO;
 import br.pucpr.projetowebservice.dto.UsuarioDTO;
+import br.pucpr.projetowebservice.exception.BusinessException;
 import br.pucpr.projetowebservice.model.Tipo;
 import br.pucpr.projetowebservice.model.Usuario;
 import br.pucpr.projetowebservice.service.TipoService;
@@ -57,16 +58,20 @@ public class TipoController {
     }
 
     @PutMapping("/{idTipo}")
-    public ResponseEntity<TipoDTO> update(@PathVariable("idTipo") Integer idTipo, @RequestBody TipoDTO tipoDTO) {
-        Tipo tipo = new ModelMapper().map(tipoDTO, Tipo.class);
-        tipoService.save(tipo);
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<TipoDTO> update(@PathVariable("idTipo") Integer idTipo, @RequestBody TipoDTO tipoDTO) throws BusinessException {
+//            if (idTipo == null || tipoDTO.getIdTipo() == null) {
+//                throw new BusinessException("ID_REQUIRED","O ID é necessário");
+//            } Comentei pois estava validando apenas o id passado pelo json e nao pela URL
+            tipoDTO.setIdTipo(idTipo);
+            Tipo tipo = new ModelMapper().map(tipoDTO, Tipo.class);
+            tipoService.save(tipo);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(tipoDTO);
     }
 
     @DeleteMapping("/{idTipo}")
-    public ResponseEntity<Void> delete(@PathVariable("idTipo") Integer idTipo) {
-        boolean removed = tipos.removeIf(t -> t.getIdTipo().equals(idTipo));
-        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public void delete(@PathVariable("idTipo") Integer idTipo) {
+        tipoService.delete(idTipo);
     }
 
 }

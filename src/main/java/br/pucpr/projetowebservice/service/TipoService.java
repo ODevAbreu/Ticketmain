@@ -18,4 +18,7 @@ public class TipoService {
     public List<Tipo> findAll() {
         return tipoRepository.findAll();
     }
+    public void delete(Integer idTipo) {
+        tipoRepository.deleteById(idTipo);
+    }
 }
