@@ -2,7 +2,6 @@ package br.pucpr.projetowebservice.controller;
 
 import br.pucpr.projetowebservice.dto.EventoDTO;
 import br.pucpr.projetowebservice.model.Evento;
-import br.pucpr.projetowebservice.model.Usuario;
 import br.pucpr.projetowebservice.service.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,25 +40,32 @@ public class EventoController {
     }
 
     @GetMapping
-    @Operation(summary = "Obter a lista de evenos", description = "Retorna a lista de eventos")
+    @Operation(summary = "Obter a lista de eventos", description = "Retorna a lista de eventos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperado com sucesso"),
     })
     public List<EventoDTO> findAll() {
-        return eventos;
+        List<Evento> evento = eventoService.findAll();
+        List<EventoDTO> eventoDTO = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for (Evento u : evento) {
+            eventoDTO.add(mapper.map(u, EventoDTO.class));
+        }
+        return eventoDTO;
     }
 
     @PutMapping("/{IdEvento}")
     public ResponseEntity<EventoDTO> update(@PathVariable("IdEvento") Integer IdEvento, @RequestBody EventoDTO eventoDTO) {
+        eventoDTO.setIdEvento(IdEvento);
         Evento evento = new ModelMapper().map(eventoDTO, Evento.class);
         eventoService.save(evento);
-        return ResponseEntity.notFound().build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(eventoDTO);
     }
 
     @DeleteMapping("/{IdEvento}")
-    public ResponseEntity<Void> delete(@PathVariable("IdEvento") Integer IdEvento) {
-        boolean removed = eventos.removeIf(evento -> evento.getIdEvento().equals(IdEvento));
-        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public void delete(@PathVariable("IdEvento") Integer IdEvento) {
+        eventoService.delete(IdEvento);
     }
 
 }
