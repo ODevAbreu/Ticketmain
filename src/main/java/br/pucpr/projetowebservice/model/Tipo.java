@@ -12,10 +12,10 @@ public class Tipo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_tipo")
-    private long id_tipo;
+    private Integer idTipo;
 
-    @Column(name = "Tipo")
-    private String NomeEvento;
+    @Column(name = "tipo")
+    private String tipo;
 
     @OneToOne(mappedBy = "tipo")
     private Evento evento;

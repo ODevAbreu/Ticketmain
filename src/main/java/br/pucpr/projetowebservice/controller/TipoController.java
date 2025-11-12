@@ -1,6 +1,7 @@
 package br.pucpr.projetowebservice.controller;
 
 import br.pucpr.projetowebservice.dto.TipoDTO;
+import br.pucpr.projetowebservice.dto.UsuarioDTO;
 import br.pucpr.projetowebservice.model.Tipo;
 import br.pucpr.projetowebservice.model.Usuario;
 import br.pucpr.projetowebservice.service.TipoService;
@@ -46,7 +47,13 @@ public class TipoController {
             @ApiResponse(responseCode = "200", description = "Recuperado com sucesso"),
     })
     public List<TipoDTO> findAll() {
-        return tipos;
+        List<Tipo> tipo = tipoService.findAll();
+        List<TipoDTO> tipoDTO = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for (Tipo u : tipo) {
+            tipoDTO.add(mapper.map(u, TipoDTO.class));
+        }
+        return tipoDTO;
     }
 
     @PutMapping("/{idTipo}")
