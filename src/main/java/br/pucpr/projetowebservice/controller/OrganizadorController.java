@@ -55,9 +55,10 @@ public class OrganizadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<OrganizadorDTO> update(@PathVariable("id") Integer id, @RequestBody OrganizadorDTO organizadorDTO) {
+        organizadorDTO.setId(id);
         Organizador organizador = new ModelMapper().map(organizadorDTO, Organizador.class);
         organizadorService.save(organizador);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(organizadorDTO);
     }
 
     @DeleteMapping("/{id}")
