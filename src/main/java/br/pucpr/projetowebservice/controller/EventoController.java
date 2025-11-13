@@ -34,11 +34,16 @@ public class EventoController {
             @ApiResponse(responseCode = "400", description = "Os dados do evento estão incorretos."),
     })
     public ResponseEntity<EventoDTO> save(@Valid @RequestBody EventoDTO eventoDTO) {
+        eventoDTO.setIdEvento(null);
+
         ModelMapper mapper = new ModelMapper();
         Evento evento = mapper.map(eventoDTO, Evento.class);
 
-        eventoService.save(evento);
-        return ResponseEntity.status(HttpStatus.CREATED).body(eventoDTO);
+        Evento saved = eventoService.save(evento);
+
+        // Retorna o objeto salvo (com ID gerado)
+        EventoDTO response = mapper.map(saved, EventoDTO.class);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping

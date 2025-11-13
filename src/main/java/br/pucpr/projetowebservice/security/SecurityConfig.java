@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/organizador/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/evento/**").permitAll()
                         .requestMatchers("/api/v1/local/**").permitAll()
+                        .requestMatchers("/api/v1/ingresso/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

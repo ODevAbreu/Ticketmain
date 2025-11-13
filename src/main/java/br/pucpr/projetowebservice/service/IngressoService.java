@@ -20,6 +20,11 @@ public class IngressoService {
         return ingressoRepository.findAll();
     }
 
+    public Ingresso findById(Long id) {
+        return ingressoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingresso não encontrado com ID: " + id));
+    }
+
     public void delete(Long id) {
         ingressoRepository.deleteById(id);
     }

@@ -11,6 +11,8 @@ public class IngressoDTO {
     private Long id;
     private Double preco;
     private String tipoIngresso;
-    private EventoDTO evento;
-    private UsuarioDTO usuario;
+
+    // Agora ambos são Long para compatibilidade
+    private Long eventoId;    // Compatível com Evento.id (long)
+    private Long usuarioId;   // Compatível com Usuario.id (Long)
 }

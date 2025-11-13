@@ -32,9 +32,23 @@ public class LocalController {
             @ApiResponse(responseCode = "400", description = "Os dados do local estão incorretos."),
     })
     public ResponseEntity<LocalDTO> save(@Valid @RequestBody LocalDTO localDTO) {
-        Local local = mapper.map(localDTO, Local.class);
+        // VALIDAÇÃO: Force o ID para null para garantir INSERT
+        localDTO.setIdLocal(null);
+
+        // MAPEAMENTO MANUAL - corrigindo os nomes diferentes
+        Local local = new Local();
+        local.setLocal(localDTO.getLocal());  // DTO: nomeLocal → Model: local
+        local.setEndereco(localDTO.getEndereco());
+
         Local salvo = localService.save(local);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(salvo, LocalDTO.class));
+
+        // Converte de volta para DTO
+        LocalDTO response = new LocalDTO();
+        response.setIdLocal(salvo.getIdLocal());
+        response.setLocal(salvo.getLocal());  // Model: local → DTO: nomeLocal
+        response.setEndereco(salvo.getEndereco());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -50,7 +64,7 @@ public class LocalController {
     @Operation(summary = "Atualiza um local", description = "Atualiza os dados de um local existente")
     public ResponseEntity<LocalDTO> update(@PathVariable("idLocal") Integer idLocal, @RequestBody LocalDTO localDTO) {
         Local existente = localService.findById(idLocal);
-        existente.setLocal(localDTO.getNomeLocal());
+        existente.setLocal(localDTO.getLocal());
         existente.setEndereco(localDTO.getEndereco());
         Local atualizado = localService.save(existente);
         return ResponseEntity.ok(mapper.map(atualizado, LocalDTO.class));

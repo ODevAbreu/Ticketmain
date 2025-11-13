@@ -24,7 +24,6 @@ public class Ingresso {
     @JoinColumn(name = "id_evento", referencedColumnName = "id")
     private Evento evento;
 
-
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "ID")
     private Usuario usuario;

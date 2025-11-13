@@ -9,7 +9,7 @@ public class LocalDTO {
     private Integer idLocal;
 
     @NotBlank
-    private String nomeLocal;
+    private String local;
 
     @NotBlank
     private String endereco;

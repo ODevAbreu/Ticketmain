@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "TAB_TIPO")
 public class Tipo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo")
     private Integer idTipo;
 

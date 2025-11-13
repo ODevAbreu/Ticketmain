@@ -37,6 +37,9 @@ public class TipoController {
             @ApiResponse(responseCode = "400", description = "Os dados do tipo estão incorretos."),
     })
     public ResponseEntity<TipoDTO> save(@Valid @RequestBody TipoDTO tipoDTO) {
+        // CORREÇÃO: Force o ID para null antes de mapear
+        tipoDTO.setIdTipo(null);
+
         Tipo tipo = new ModelMapper().map(tipoDTO, Tipo.class);
         tipoService.save(tipo);
         return ResponseEntity.status(HttpStatus.CREATED).body(tipoDTO);
