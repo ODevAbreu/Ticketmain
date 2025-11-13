@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -52,14 +53,14 @@ public class UsuarioServiceTest {
         Usuario user = new Usuario();
         user.setEmail("email@email.com");
 
-        when(userRepository.findByEmail("email@email.com")).thenReturn(user);
+        when(userRepository.findByEmail("email@email.com")).thenReturn(Optional.of(user));
 
         // When
-        Usuario result = userService.findByEmail("email@email.com");
+        Optional<Usuario> result = userService.findByEmail("email@email.com");
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getEmail()).isEqualTo("email@email.com");
+        assertThat(result.get().getEmail()).isEqualTo("email@email.com");
         verify(userRepository, times(1)).findByEmail("email@email.com");
     }
 }

@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidExceptions(MethodArgumentNotValidException ex) {
         ErrorResponse error = new ErrorResponse(
                 400,
-                "NAME_REQUIRED",
-                "Bad Request",
-                "",
+                "VALIDATION_ERROR",
+                "Dados de entrada inválidos",
+                ex.getBindingResult().getFieldErrors().toString(),
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -38,11 +38,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+        // CORREÇÃO: Verificar se getCause() não é null
+        String cause = ex.getCause() != null ? ex.getCause().toString() : ex.getMessage();
+
         ErrorResponse error = new ErrorResponse(
                 500,
                 "INTERNAL_SERVER_ERROR",
                 "Ocorreu um erro inesperado",
-                ex.getCause().toString(),
+                cause, // ← USAR A VARIÁVEL CORRIGIDA
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,5 +1,6 @@
 package br.pucpr.projetowebservice.dto;
 
+import br.pucpr.projetowebservice.security.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,4 +32,6 @@ public class UsuarioDTO {
     @NotNull(message = "A data de nascimento precisa ser preenchida.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dataNascimento;
+
+    private Role role;
 }

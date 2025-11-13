@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/login")
 @AllArgsConstructor
@@ -19,11 +18,9 @@ public class LoginController {
     private final AuthService authService;
 
     @PostMapping("/usuario")
-    public ResponseEntity<AuthResponse> authenticate(
-            @RequestBody AuthRequest request
-    ) {
-        request.setTipologin("usuario");
-        return ResponseEntity.ok(authService.authenticate(request));
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
+        // Chama o AuthService para autenticar e gerar o token JWT
+        AuthResponse response = authService.authenticate(request);
+        return ResponseEntity.ok(response);
     }
-
 }

@@ -1,67 +1,47 @@
 package br.pucpr.projetowebservice.security;
 
-import br.pucpr.projetowebservice.model.Organizador;
 import br.pucpr.projetowebservice.model.Usuario;
-import br.pucpr.projetowebservice.repository.OrganizadorRepository;
 import br.pucpr.projetowebservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class AuthService {
 
-    //private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final OrganizadorRepository organizadorRepository;
+    private final PasswordEncoder passwordEncoder; // Agora vem do ApplicationConfig
 
     public AuthResponse authenticate(AuthRequest request) {
-        if (request.getTipologin().equals("usuario")) {
-            Usuario user = userRepository.findByEmail(request.getEmail());
-            if (user == null || !user.getSenha().equals(request.getPassword())) {
-                throw new RuntimeException("Usuario incorreto");
-            }
-
-            UserAuthentication userAuthentication = new UserAuthentication();
-            userAuthentication.setEmail(request.getEmail());
-
-            var jwtToken = jwtService.generateToken(userAuthentication);
-
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setToken(jwtToken);
-            authResponse.setEmail(user.getEmail());
-            authResponse.setExpires(new Date(System.currentTimeMillis() + 1000 * 60 * 24));
-
-            return authResponse;
+        // Busca o usuário no banco
+        Optional<Usuario> user = userRepository.findByEmail(request.getEmail());
+        if (user.isEmpty()) {
+            throw new RuntimeException("Usuário não encontrado");
         }
 
-        if (request.getTipologin().equals("organizador")) {
-            Organizador organizador = organizadorRepository.findByEmail(request.getEmail());
-
-            if (organizador == null || !organizador.getSenha().equals(request.getPassword())) {
-                throw new RuntimeException(" incorreto");
-            }
-            UserAuthentication userAuthentication = new UserAuthentication();
-            userAuthentication.setEmail(request.getEmail());
-            userAuthentication.setRole(Role.USER);
-
-            var jwtToken = jwtService.generateToken(userAuthentication);
-
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setToken(jwtToken);
-            authResponse.setEmail(organizador.getEmail());
-            authResponse.setExpires(new Date(System.currentTimeMillis() + 1000 * 60 * 24));
-
-            return authResponse;
+        // Verifica a senha MANUALMENTE
+        if (!passwordEncoder.matches(request.getPassword(), user.get().getSenha())) {
+            throw new RuntimeException("Senha inválida");
         }
 
-        return null;
+        // Gera o token JWT
+        UserAuthentication userAuth = new UserAuthentication();
+        userAuth.setEmail(user.get().getEmail());
+        userAuth.setRole(user.get().getRole());
+
+        String jwtToken = jwtService.generateToken(userAuth);
+
+        // Monta a resposta
+        AuthResponse response = new AuthResponse();
+        response.setToken(jwtToken);
+        response.setEmail(user.get().getEmail());
+        response.setExpires(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
+
+        return response;
     }
-
-
 }
