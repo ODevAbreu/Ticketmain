@@ -23,11 +23,11 @@ public class Evento {
     @Column(name = "Lotacao")
     private int lotacao;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
     private Tipo tipo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "local_id")
     private Local local;
 
