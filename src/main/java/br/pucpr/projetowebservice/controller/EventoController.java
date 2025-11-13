@@ -34,7 +34,9 @@ public class EventoController {
             @ApiResponse(responseCode = "400", description = "Os dados do evento estão incorretos."),
     })
     public ResponseEntity<EventoDTO> save(@Valid @RequestBody EventoDTO eventoDTO) {
-        Evento evento = new ModelMapper().map(eventoDTO, Evento.class);
+        ModelMapper mapper = new ModelMapper();
+        Evento evento = mapper.map(eventoDTO, Evento.class);
+
         eventoService.save(evento);
         return ResponseEntity.status(HttpStatus.CREATED).body(eventoDTO);
     }
@@ -54,18 +56,18 @@ public class EventoController {
         return eventoDTO;
     }
 
-    @PutMapping("/{IdEvento}")
-    public ResponseEntity<EventoDTO> update(@PathVariable("IdEvento") Integer IdEvento, @RequestBody EventoDTO eventoDTO) {
-        eventoDTO.setIdEvento(IdEvento);
+    @PutMapping("/{idEvento}")
+    public ResponseEntity<EventoDTO> update(@PathVariable("idEvento") Integer idEvento, @RequestBody EventoDTO eventoDTO) {
+        eventoDTO.setIdEvento(idEvento);
         Evento evento = new ModelMapper().map(eventoDTO, Evento.class);
         eventoService.save(evento);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(eventoDTO);
     }
 
-    @DeleteMapping("/{IdEvento}")
-    public void delete(@PathVariable("IdEvento") Integer IdEvento) {
-        eventoService.delete(IdEvento);
+    @DeleteMapping("/{idEvento}")
+    public void delete(@PathVariable("idEvento") Integer idEvento) {
+        eventoService.delete(idEvento);
     }
 
 }

@@ -39,7 +39,6 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/evento/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
@@ -47,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/login/**").permitAll()
                         .requestMatchers("/api/v1/tipo/**").permitAll()
                         .requestMatchers("/api/v1/organizador/**").permitAll()
+                        .requestMatchers("/api/v1/evento/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

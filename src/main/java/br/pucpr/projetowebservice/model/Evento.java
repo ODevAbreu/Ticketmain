@@ -15,13 +15,13 @@ public class Evento {
     private long id;
 
     @Column(name = "NomeEvento")
-    private String NomeEvento;
+    private String nomeEvento;
 
     @Column(name = "DataEvento")
-    private Date DataEvento;
+    private Date dataEvento;
 
     @Column(name = "Lotacao")
-    private int Lotacao;
+    private int lotacao;
 
     @OneToOne
     @JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
