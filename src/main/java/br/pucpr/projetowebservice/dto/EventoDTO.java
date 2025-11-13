@@ -15,6 +15,7 @@ public class EventoDTO {
     private String nomeEvento;
     private Date dataEvento;
     private int lotacao;
+    private LocalDTO local;
     private TipoDTO tipo;
 
 //como inserir os dados com o join do tipo

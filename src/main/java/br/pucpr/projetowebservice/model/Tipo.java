@@ -17,7 +17,5 @@ public class Tipo {
     @Column(name = "tipo")
     private String tipo;
 
-    @OneToOne(mappedBy = "tipo")
-    private Evento evento;
 
 }

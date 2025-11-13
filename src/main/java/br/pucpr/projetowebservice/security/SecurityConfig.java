@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/tipo/**").permitAll()
                         .requestMatchers("/api/v1/organizador/**").permitAll()
                         .requestMatchers("/api/v1/evento/**").permitAll()
+                        .requestMatchers("/api/v1/local/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
