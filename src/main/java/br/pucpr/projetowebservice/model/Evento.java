@@ -27,6 +27,12 @@ public class Evento {
     @JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
     private Tipo tipo;
 
+    @OneToOne
+    @JoinColumn(name = "local_id")
+    private Local local;
+
+
+
 
 
 }
